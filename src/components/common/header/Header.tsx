@@ -1,5 +1,3 @@
-import { useNavigate } from "react-router-dom";
-
 export default function Header() {
   const handleHeaderClick = () => {
     window.location.href = "/"; // Navigate to the root route
