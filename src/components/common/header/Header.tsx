@@ -1,6 +1,6 @@
 export default function Header() {
   const handleHeaderClick = () => {
-    window.location.href = "/"; // Navigate to the root route
+    window.location.href = "/music-podcasts-challenge/"; // Navigate to the root route
   };
 
   return (
