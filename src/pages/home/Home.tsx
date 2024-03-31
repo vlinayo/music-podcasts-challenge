@@ -1,116 +1,96 @@
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import PodcastCard from "../../components/podcast-card/PodcastCard";
+import { PodcastItem } from "../../interface/PodcastApi";
+import PodcastCard, {
+  PodcastCardProps,
+} from "../../components/podcast-card/PodcastCard";
 import homeStyles from "./Home.module.scss";
+import Counter from "../../components/counter/Counter";
+import Input from "../../components/input/Input";
 
 export default function Home() {
   const navigate = useNavigate();
+  const [podcasts, setPodcasts] = useState<PodcastCardProps[]>([]);
+  const [filteredPodcasts, setFilteredPodcasts] = useState<PodcastCardProps[]>(
+    []
+  );
+
+  //TODO: to utils...
+  const isLocalStorageValid = (podcastResponse: string) => {
+    const { timestamp } = JSON.parse(podcastResponse);
+    const oneDayInMilliseconds = 24 * 60 * 60 * 1000;
+    const oneDayAgo = Date.now() - oneDayInMilliseconds;
+
+    return timestamp > oneDayAgo;
+  };
+
+  //TODO: maybe custom hook?
+  useEffect(() => {
+    const storePodcastData = (data: any) => {
+      const timestamp = Date.now();
+      localStorage.setItem(
+        "podcastResponse",
+        JSON.stringify({ data, timestamp })
+      );
+      setPodcasts(data);
+      setFilteredPodcasts(data);
+    };
+
+    const getPodcasts = async () => {
+      const podcastResponse = localStorage.getItem("podcastResponse");
+
+      if (!podcastResponse || !isLocalStorageValid(podcastResponse)) {
+        const response = await fetch(
+          "https://itunes.apple.com/us/rss/toppodcasts/limit=100/genre=1310/json"
+        );
+        if (!response.ok) {
+          throw new Error("Could not fetch podcasts");
+        }
+        const data = await response.json();
+        console.log(data.feed.entry);
+        const transformedData: PodcastCardProps[] = data.feed.entry.map(
+          (podcast: PodcastItem) => {
+            return {
+              title: podcast["im:name"].label,
+              author: podcast["im:artist"].label,
+              image: podcast["im:image"][2].label,
+              id: podcast.id.attributes["im:id"],
+            };
+          }
+        );
+        storePodcastData(transformedData);
+      } else {
+        const { data } = JSON.parse(podcastResponse);
+        setPodcasts(data);
+        setFilteredPodcasts(data);
+      }
+    };
+    getPodcasts();
+  }, []);
 
   const handleSelectedPodcast = (id: number) => {
     navigate(`/music-podcasts-challenge/podcast/${id}`);
   };
 
-  const dummyDataPodcastList = [
-    {
-      id: 1,
-      title: "Podcast 1",
-      description: "Description 1",
-      author: "Author 1",
-      image: "https://picsum.photos/200/200",
-      episodes: [
-        {
-          id: 1,
-          title: "Episode 1",
-          description: "Description 1",
-          image: "https://picsum.photos/200/300",
-          duration: 120,
-        },
-        {
-          id: 2,
-          title: "Episode 2",
-          description: "Description 2",
-          image: "https://picsum.photos/200/300",
-          duration: 120,
-        },
-      ],
-    },
-    {
-      id: 2,
-      title: "Podcast 2",
-      description: "Description 2",
-      author: "Author 2",
-      image: "https://picsum.photos/200/200",
-      episodes: [
-        {
-          id: 1,
-          title: "Episode 1",
-          description: "Description 1",
-          image: "https://picsum.photos/200/200",
-          duration: 120,
-        },
-      ],
-    },
-    {
-      id: 3,
-      title: "Podcast 3",
-      description: "Description 3",
-      author: "Author 3",
-      image: "https://picsum.photos/200/200",
-      episodes: [
-        {
-          id: 1,
-          title: "Episode 1",
-          description: "Description 1",
-          image: "https://picsum.photos/200/200",
-          duration: 120,
-        },
-      ],
-    },
-    {
-      id: 4,
-      title: "Podcast 4",
-      description: "Description 4",
-      author: "Author 4",
-      image: "https://picsum.photos/200/200",
-      episodes: [],
-    },
-    {
-      id: 5,
-      title: "Podcast 5",
-      description: "Description 5",
-      author: "Author 5",
-      image: "https://picsum.photos/200/200",
-      episodes: [],
-    },
-    {
-      id: 6,
-      title: "Podcast 6",
-      description: "Description 6",
-      author: "Author 6",
-      image: "https://picsum.photos/200/200",
-      episodes: [],
-    },
-    {
-      id: 7,
-      title: "Podcast 7",
-      description: "Description 7",
-      author: "Author 7",
-      image: "https://picsum.photos/200/200",
-      episodes: [],
-    },
-    {
-      id: 8,
-      title: "Podcast 8",
-      description: "Description 8",
-      author: "Author 8",
-      image: "https://picsum.photos/200/200",
-      episodes: [],
-    },
-  ];
+  const handleFilterChanges = (value: string) => {
+    if (value.trim() === "") {
+      setFilteredPodcasts(podcasts);
+      return;
+    }
+    const filteredPodcasts = podcasts.filter((podcast) =>
+      podcast.title.toLowerCase().includes(value.toLowerCase())
+    );
+    setFilteredPodcasts(filteredPodcasts);
+  };
 
   return (
-    <div>
-      <div className={homeStyles.home}>
-        {dummyDataPodcastList.map((podcast) => (
+    <div className={homeStyles.home}>
+      <div className={homeStyles.home__filter}>
+        <Counter number={podcasts.length} />
+        <Input onInputChange={handleFilterChanges} />
+      </div>
+      <div className={homeStyles.home__podcasts}>
+        {filteredPodcasts.map((podcast) => (
           <PodcastCard
             key={podcast.id}
             {...podcast}

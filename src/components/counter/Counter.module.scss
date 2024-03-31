@@ -1,0 +1,20 @@
+@import "../../assets/styles/variables";
+
+.counter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: auto;
+    min-width: 48px;
+    padding: 4px;
+    background-color: $main-blue;
+    border-radius: 8px;
+    margin: 0px 8px;
+
+    p {
+        color: white;
+        font-weight: 900;
+        text-align: center;
+        margin: 0;
+    }
+}

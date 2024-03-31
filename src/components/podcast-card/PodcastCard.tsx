@@ -2,24 +2,26 @@ import React from "react";
 import Card from "../common/card/Card";
 import podcastCardStyles from "./PodcastCard.module.scss";
 
-interface PodcastCardProps {
+export interface PodcastCardProps {
   id: number;
   title: string;
   author: string;
   image: string;
-  description: string;
-  episodes: Array<any>;
-  onPodcastSelected: (id: number) => void;
+  onPodcastSelected?: (id: number) => void;
 }
 
 //podcast card component to be displayed in the list of podcasts
 const PodcastCard: React.FC<PodcastCardProps> = (props) => {
   const { title, author, image, id, onPodcastSelected } = props;
 
+  const handlePodcastClick = (id: number) => {
+    onPodcastSelected && onPodcastSelected(id);
+  };
+
   return (
     <div
       className={podcastCardStyles.podcast}
-      onClick={() => onPodcastSelected(id)}
+      onClick={() => handlePodcastClick(id)}
     >
       <Card customStyles={podcastCardStyles.podcast__card}>
         <img
