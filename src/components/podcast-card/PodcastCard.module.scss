@@ -1,0 +1,68 @@
+@import "../../assets/styles/variables";
+
+.podcast {
+  width: max-content;
+  min-width: 250px;
+  margin: 40px 18px;
+  cursor: pointer;
+
+  &__card {
+    position: relative;
+
+    &:hover {
+      background-color: $gray-02;
+  
+        img {
+          filter: grayscale(80%);
+        }
+
+        p, h2 {
+          color: black;
+        }
+    }
+  }
+
+  &__image {
+    border-radius: 50%;
+    height: 120px;
+    width: 120px;
+    position: absolute;
+    top: 8%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: auto;
+    z-index: 1;
+  }
+
+  &__content {
+    margin-top: 60px;
+
+    h2,
+    p {
+      text-align: center;
+      margin: 0;
+    }
+
+    h2 {
+      text-transform: uppercase;
+      font-size: 16px;
+      margin-bottom: 12px;
+      font-weight: 700;
+      font-style: normal;
+      line-height: normal;
+      letter-spacing: 0.5px;
+    }
+
+    p {
+      color: $gray-01;
+
+      span {
+        text-transform: uppercase;
+        letter-spacing: 0;
+        list-style: 0;
+      }
+    }
+  }
+
+  
+}
