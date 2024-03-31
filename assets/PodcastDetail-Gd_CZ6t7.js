@@ -1,0 +1,1 @@
+import{u as a,j as t}from"./index-ZXJppCX4.js";function i(){const s=a(),e=()=>{s("/music-podcasts-challenge/podcast/1/episode/1")},o=()=>{s(-1)};return t.jsxs("div",{children:[t.jsx("h2",{children:"PodcastDetail"}),t.jsx("button",{onClick:e,children:"Go to Episode Detail"}),t.jsx("button",{onClick:o,children:"Go Back"})]})}export{i as default};
