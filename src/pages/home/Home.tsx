@@ -77,8 +77,10 @@ export default function Home() {
       setFilteredPodcasts(podcasts);
       return;
     }
-    const filteredPodcasts = podcasts.filter((podcast) =>
-      podcast.title.toLowerCase().includes(value.toLowerCase())
+    const filteredPodcasts = podcasts.filter(
+      (podcast) =>
+        podcast.title.toLowerCase().includes(value.toLowerCase()) ||
+        podcast.author.toLowerCase().includes(value.toLowerCase())
     );
     setFilteredPodcasts(filteredPodcasts);
   };
