@@ -9,7 +9,7 @@ export interface PodcastItem {
       height: string;
     };
   }[];
-  summary?: {
+  summary: {
     label: string;
   };
   "im:price"?: {
