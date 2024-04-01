@@ -4,6 +4,7 @@
   width: max-content;
   min-width: 250px;
   max-width: 250px;
+  width: 250px;
   margin: 40px 18px;
   cursor: pointer;
 
@@ -12,14 +13,15 @@
 
     &:hover {
       background-color: $gray-02;
-  
-        img {
-          filter: grayscale(80%);
-        }
 
-        p, h2 {
-          color: black;
-        }
+      img {
+        filter: grayscale(80%);
+      }
+
+      p,
+      h2 {
+        color: $black;
+      }
     }
   }
 
@@ -63,6 +65,4 @@
       }
     }
   }
-
-  
 }

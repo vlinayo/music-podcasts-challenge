@@ -3,8 +3,12 @@ import { Navigate, createBrowserRouter } from "react-router-dom";
 import Home from "../pages/home/Home";
 
 //lazy load the secondary pages
-const PodcastDetail = React.lazy(() => import("../pages/podcast-detail/PodcastDetail"));
-const EpisodeDetail = React.lazy(() => import("../pages/episode-detail/EpisodeDetail"));
+const PodcastDetail = React.lazy(
+  () => import("../pages/podcast-detail/PodcastDetail"),
+);
+const EpisodeDetail = React.lazy(
+  () => import("../pages/episode-detail/EpisodeDetail"),
+);
 
 const SuspenseFallback = () => <div>Loading...</div>;
 

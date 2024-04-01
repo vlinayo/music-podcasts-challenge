@@ -1,16 +1,16 @@
 .home {
+  display: flex;
+  flex-direction: column;
+  margin: 0px 135px;
+
+  &__podcasts {
     display: flex;
-    flex-direction: column;
-    margin: 0px 135px;
-    
-    &__podcasts {
-        display: flex;
-        flex-wrap: wrap;
-    }
-    
-    &__filter {
-        display: flex;
-        justify-content: flex-end;
-        padding: 14px 0px
-    }
+    flex-wrap: wrap;
+  }
+
+  &__filter {
+    display: flex;
+    justify-content: flex-end;
+    padding: 14px 0px;
+  }
 }
