@@ -9,7 +9,7 @@ export default function EpisodeDetail() {
   const { podcastId, episodeId } = useParams();
   const { podcastDetail, episode } = usePodcastEpisodeData(
     podcastId,
-    episodeId,
+    episodeId
   );
 
   const handleBannerPodcastClick = () => {
@@ -35,6 +35,7 @@ export default function EpisodeDetail() {
               <h2>{episode?.title && episode.title}</h2>
               {episode?.description && (
                 <div
+                  className={epidoseDetailStyles.episode__description}
                   dangerouslySetInnerHTML={{
                     __html: episode.description,
                   }}
