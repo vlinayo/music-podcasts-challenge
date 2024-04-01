@@ -23,7 +23,7 @@ export const usePodcastListData = () => {
   const { setIsLoading } = useHeaderContext();
   const [podcasts, setPodcasts] = useState<PodcastCardProps[]>([]);
   const [filteredPodcasts, setFilteredPodcasts] = useState<PodcastCardProps[]>(
-    []
+    [],
   );
 
   const handleFilterChanges = (value: string) => {
@@ -34,7 +34,7 @@ export const usePodcastListData = () => {
     const filteredPodcasts = podcasts.filter(
       (podcast) =>
         podcast.title.toLowerCase().includes(value.toLowerCase()) ||
-        podcast.author.toLowerCase().includes(value.toLowerCase())
+        podcast.author.toLowerCase().includes(value.toLowerCase()),
     );
     setFilteredPodcasts(filteredPodcasts);
   };
@@ -65,7 +65,7 @@ export const usePodcastListData = () => {
               id: podcast.id.attributes["im:id"],
               description: podcast.summary.label,
             };
-          }
+          },
         );
         storePodcastData(transformedData);
       } else {
@@ -91,7 +91,7 @@ export const usePodcastDetailData = (podcastId?: string) => {
   useEffect(() => {
     const getPodcastEpisodes = async (url: string) => {
       const response = await fetch(
-        `${ALLOW_ORIGINS_URL}${encodeURIComponent(url)}`
+        `${ALLOW_ORIGINS_URL}${encodeURIComponent(url)}`,
       );
       if (!response.ok) {
         throw new Error(ERROR_PODCAST_EPISODES_FETCH);
@@ -164,8 +164,8 @@ export const usePodcastDetailData = (podcastId?: string) => {
     const getPodcastDetails = async () => {
       const response = await fetch(
         `${ALLOW_ORIGINS_URL}${encodeURIComponent(
-          `${LOOKUP_PODCAST_BY_ID_URL}${podcastId}`
-        )}`
+          `${LOOKUP_PODCAST_BY_ID_URL}${podcastId}`,
+        )}`,
       );
       if (!response.ok) {
         throw new Error(ERROR_PODCAST_DETAILS_FETCH);
@@ -196,7 +196,7 @@ export const usePodcastDetailData = (podcastId?: string) => {
 
 export const usePodcastEpisodeData = (
   podcastId?: string,
-  episodeId?: string
+  episodeId?: string,
 ) => {
   const [episode, setEpisode] = useState<EpisodesDetails>();
   const [podcastDetail, setPodcastDetail] = useState<PodcastCardProps>();
@@ -209,7 +209,7 @@ export const usePodcastEpisodeData = (
       const { data } = JSON.parse(podcastDetailsResponse);
       setPodcastDetail(data);
       const episodeData = data.episodes.find(
-        (episode: EpisodesDetails) => episode.episodeId === episodeId
+        (episode: EpisodesDetails) => episode.episodeId === episodeId,
       );
       setEpisode(episodeData);
       setIsLoading(false);

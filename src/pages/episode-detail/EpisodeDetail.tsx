@@ -9,7 +9,7 @@ export default function EpisodeDetail() {
   const { podcastId, episodeId } = useParams();
   const { podcastDetail, episode } = usePodcastEpisodeData(
     podcastId,
-    episodeId
+    episodeId,
   );
 
   const handleBannerPodcastClick = () => {
