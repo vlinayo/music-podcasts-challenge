@@ -1,7 +1,10 @@
-@import '../../../assets/styles/_variables';
+@import "../../../assets/styles/_variables";
 
 .header {
-    border-bottom: 1px solid $light-gray;
-    margin-bottom: 24px;
-    cursor: pointer;
+  border-bottom: 1px solid $light-gray;
+  margin-bottom: 24px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
