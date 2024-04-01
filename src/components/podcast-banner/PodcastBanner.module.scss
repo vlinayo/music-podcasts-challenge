@@ -1,0 +1,50 @@
+@import "../../assets/styles/variables";
+
+.banner {
+  max-width: 300px;
+
+  &__cursor {
+    cursor: pointer;
+  }
+
+  &__card {
+    width: fit-content;
+  }
+
+  img {
+    border-radius: 12px;
+    width: 200px;
+    height: 200px;
+    display: flex;
+    margin: auto;
+  }
+
+  &__title__container {
+    margin: 24px 0px;
+    padding: 16px;
+    border-bottom: 1px solid $gray-04;
+    border-top: 1px solid $gray-04;
+
+    &__title {
+      font-weight: 800;
+      font-size: 20px;
+      margin: 0;
+      margin-bottom: 4px;
+    }
+
+    &__author {
+      font-style: italic;
+      margin: 0;
+    }
+  }
+
+  &__description__container {
+    &__description {
+      font-style: italic;
+      font-size: 14px;
+    }
+    &__title {
+      font-weight: 800;
+    }
+  }
+}

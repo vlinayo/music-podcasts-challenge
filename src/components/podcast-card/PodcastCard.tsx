@@ -2,11 +2,22 @@ import React from "react";
 import Card from "../common/card/Card";
 import podcastCardStyles from "./PodcastCard.module.scss";
 
+export interface EpisodesDetails {
+  title: string;
+  description: string;
+  duration: string;
+  pubDate: string;
+  audioUrl: string;
+  episodeId: string;
+}
+
 export interface PodcastCardProps {
   id: number;
   title: string;
   author: string;
   image: string;
+  description?: string;
+  episodes?: EpisodesDetails[];
   onPodcastSelected?: (id: number) => void;
 }
 

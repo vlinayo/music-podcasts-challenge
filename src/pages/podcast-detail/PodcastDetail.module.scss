@@ -1,0 +1,54 @@
+@import "../../assets/styles/variables";
+
+.podcastDetail {
+  display: flex;
+
+  &__episodes {
+    width: 100%;
+    margin-left: 40px;
+
+    &__card {
+      margin-bottom: 24px;
+      box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+      margin: 0;
+    }
+
+    &__table {
+      border-collapse: collapse;
+      width: 100%;
+
+      th,
+      td {
+        border: 1px solid $gray-03;
+        padding: 8px;
+        text-align: left;
+        border-left: none;
+        border-right: none;
+      }
+
+      th {
+        border-top: none;
+      }
+
+      &__title {
+        color: $main-blue;
+        cursor: pointer;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+
+      &--even {
+        background-color: $gray-04;
+      }
+
+      &--odd {
+        background-color: $white;
+      }
+    }
+  }
+}

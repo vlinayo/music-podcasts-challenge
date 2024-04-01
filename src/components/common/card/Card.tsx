@@ -3,7 +3,7 @@ import React, { ReactNode } from "react";
 import cardStyles from "./Card.module.scss";
 
 interface CardProps {
-  customStyles: string;
+  customStyles?: string;
   children: ReactNode;
 }
 

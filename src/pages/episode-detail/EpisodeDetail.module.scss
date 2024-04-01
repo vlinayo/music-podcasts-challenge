@@ -1,0 +1,17 @@
+.container {
+  display: flex;
+}
+
+.banner {
+  width: -webkit-fill-available;
+  max-width: fit-content;
+  min-width: max-content;
+}
+
+.episode {
+  margin-left: 40px;
+
+  audio {
+    width: 100%;
+  }
+}
