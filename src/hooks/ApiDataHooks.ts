@@ -14,16 +14,16 @@ import {
 } from "../constants/api";
 import {
   ERROR_PODCAST_DETAILS_FETCH,
-  ERROR_PODCAST_EPISODES_FETCH,
   ERROR_PODCAST_FETCH,
 } from "../constants/errors";
 import { STORAGE_PODCASTS_KEY } from "../constants/storage";
+import { PodcastEpisode } from "../interface/EpisodeApi";
 
 export const usePodcastListData = () => {
   const { setIsLoading } = useHeaderContext();
   const [podcasts, setPodcasts] = useState<PodcastCardProps[]>([]);
   const [filteredPodcasts, setFilteredPodcasts] = useState<PodcastCardProps[]>(
-    [],
+    []
   );
 
   const handleFilterChanges = (value: string) => {
@@ -34,7 +34,7 @@ export const usePodcastListData = () => {
     const filteredPodcasts = podcasts.filter(
       (podcast) =>
         podcast.title.toLowerCase().includes(value.toLowerCase()) ||
-        podcast.author.toLowerCase().includes(value.toLowerCase()),
+        podcast.author.toLowerCase().includes(value.toLowerCase())
     );
     setFilteredPodcasts(filteredPodcasts);
   };
@@ -65,7 +65,7 @@ export const usePodcastListData = () => {
               id: podcast.id.attributes["im:id"],
               description: podcast.summary.label,
             };
-          },
+          }
         );
         storePodcastData(transformedData);
       } else {
@@ -87,95 +87,57 @@ export const usePodcastDetailData = (podcastId?: string) => {
   const { setIsLoading } = useHeaderContext();
   const [podcastData, setPodcastData] = useState<PodcastCardProps>();
   const podcastDetailsResponse = localStorage.getItem(`${podcastId}`);
+  const podcastResponse = localStorage.getItem(STORAGE_PODCASTS_KEY);
 
   useEffect(() => {
-    const getPodcastEpisodes = async (url: string) => {
-      const response = await fetch(
-        `${ALLOW_ORIGINS_URL}${encodeURIComponent(url)}`,
-      );
-      if (!response.ok) {
-        throw new Error(ERROR_PODCAST_EPISODES_FETCH);
-      }
-      const { contents } = await response.json();
-
-      // Decode Base64-encoded XML data
-      const decodedXmlString = atob(contents.split(",")[1]);
-
-      // Parse the XML document
-      const parser = new DOMParser();
-      const xmlDoc = parser.parseFromString(decodedXmlString, "text/xml");
-
-      // Extract the episodes of the podcast
-      const episodes = xmlDoc.querySelectorAll("item");
-
-      // prepare array for episodes data
-      const episodesData: EpisodesDetails[] = [];
-
-      // Iterate over episodes to extract required information
-      episodes.forEach((episode: any, index: number) => {
-        // Extract episode title
-        const title = episode.querySelector("title").textContent;
-
-        // Extract episode duration (if available)
-        const durationElement = episode.querySelector("duration");
-        const duration = durationElement
-          ? durationElement.textContent
-          : "Duration not available";
-
-        // Extract publication date
-        const pubDate = episode.querySelector("pubDate").textContent;
-
-        // Extract episode description
-        const descriptionElement = episode.querySelector("description");
-        const description = descriptionElement
-          ? descriptionElement.textContent
-          : "Description not available";
-
-        // Extract episode audio link
-        const audioUrl = episode.querySelector("enclosure").getAttribute("url");
-
-        // Generate an episode id number (id)
-        const episodeId = episodes.length - index;
-
-        episodesData.push({
-          title,
-          duration,
-          pubDate,
-          description,
-          audioUrl,
-          episodeId: episodeId.toString(),
-        });
-      });
-
-      if (podcastData && episodesData.length > 0 && podcastId) {
-        const updatePodcastDetail = {
-          ...podcastData,
-          episodes: [...episodesData],
-        };
-        setPodcastData({
-          ...podcastData,
-          episodes: [...episodesData],
-        });
-        storeDataInStorage(updatePodcastDetail, podcastId);
-        setIsLoading(false);
-      }
-    };
+    setIsLoading(true);
 
     const getPodcastDetails = async () => {
-      const response = await fetch(
-        `${ALLOW_ORIGINS_URL}${encodeURIComponent(
-          `${LOOKUP_PODCAST_BY_ID_URL}${podcastId}`,
-        )}`,
-      );
-      if (!response.ok) {
-        throw new Error(ERROR_PODCAST_DETAILS_FETCH);
+      if (podcastId && podcastResponse) {
+        const { data } = JSON.parse(podcastResponse);
+        const selectedPodcast = data.find(
+          (podcast: PodcastCardProps) => podcast.id.toString() === podcastId
+        );
+
+        const response = await fetch(
+          `${ALLOW_ORIGINS_URL}${encodeURIComponent(
+            `${LOOKUP_PODCAST_BY_ID_URL}${podcastId}&media=podcast&entity=podcastEpisode&limit=
+            200&sort=recent`
+          )}`
+        );
+        if (!response.ok) {
+          throw new Error(ERROR_PODCAST_DETAILS_FETCH);
+        }
+        const podcastEpisodesData = await response.json();
+        const { results } = JSON.parse(podcastEpisodesData.contents);
+        const totalEpisodes = results[0].trackCount;
+        const listEpisodes = results.slice(1, results.length + 1);
+
+        // prepare array for episodes data
+        const episodesData: EpisodesDetails[] = [];
+
+        listEpisodes.forEach((episode: PodcastEpisode) => {
+          episodesData.push({
+            title: episode.trackName,
+            duration: episode.trackTimeMillis,
+            pubDate: episode.releaseDate,
+            description: episode.description,
+            audioUrl: episode.episodeUrl,
+            episodeId: episode.trackId.toString(),
+          });
+        });
+
+        const updatePodcastDetail = {
+          ...selectedPodcast,
+          episodesCount: totalEpisodes,
+          episodes: [...episodesData],
+        };
+
+        setPodcastData(updatePodcastDetail);
+        storeDataInStorage(updatePodcastDetail, podcastId);
       }
-      const data = await response.json();
-      const { results } = JSON.parse(data.contents);
-      const feedUrl = results[0].feedUrl;
-      getPodcastEpisodes(feedUrl);
+      setIsLoading(false);
     };
-    setIsLoading(true);
 
     if (
       !podcastDetailsResponse ||
@@ -196,7 +158,7 @@ export const usePodcastDetailData = (podcastId?: string) => {
 
 export const usePodcastEpisodeData = (
   podcastId?: string,
-  episodeId?: string,
+  episodeId?: string
 ) => {
   const [episode, setEpisode] = useState<EpisodesDetails>();
   const [podcastDetail, setPodcastDetail] = useState<PodcastCardProps>();
@@ -209,7 +171,7 @@ export const usePodcastEpisodeData = (
       const { data } = JSON.parse(podcastDetailsResponse);
       setPodcastDetail(data);
       const episodeData = data.episodes.find(
-        (episode: EpisodesDetails) => episode.episodeId === episodeId,
+        (episode: EpisodesDetails) => episode.episodeId === episodeId
       );
       setEpisode(episodeData);
       setIsLoading(false);

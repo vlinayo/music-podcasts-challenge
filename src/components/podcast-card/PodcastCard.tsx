@@ -5,7 +5,7 @@ import podcastCardStyles from "./PodcastCard.module.scss";
 export interface EpisodesDetails {
   title: string;
   description: string;
-  duration: string;
+  duration: number;
   pubDate: string;
   audioUrl: string;
   episodeId: string;
@@ -18,6 +18,7 @@ export interface PodcastCardProps {
   image: string;
   description?: string;
   episodes?: EpisodesDetails[];
+  episodesCount?: number;
   onPodcastSelected?: (id: number) => void;
 }
 

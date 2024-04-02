@@ -37,7 +37,7 @@ export default function PodcastDetail() {
               <Card
                 customStyles={podcastDetailStyles.podcastDetail__episodes__card}
               >
-                <h2>Episodes {podcastData.episodes.length}</h2>
+                <h2>Episodes {podcastData.episodesCount}</h2>
               </Card>
             )}
             <Card>
