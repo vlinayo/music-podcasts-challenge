@@ -16,6 +16,28 @@ export default function EpisodeDetail() {
     navigate(`/music-podcasts-challenge/podcast/${podcastId}`);
   };
 
+  // Regular expression to find URLs
+  const urlRegex =
+    /(\b(?:https?|ftp|file):\/\/[-A-Z0-9+&@#/%?=~_|!:,.;]*[-A-Z0-9+&@#/%=~_|]|\b(?:www\.)[-A-Z0-9+&@#/%?=~_|!:,.;]*[.-A-Z0-9+&@#/%=~_|]|[-A-Z0-9+&@#/%?=~_|!:,.;]*\.[A-Z0-9+&@#/%=~_|][-A-Z0-9+&@#/%?=~_|!.;]*)/gi;
+
+  // Split the description into paragraphs based on newline characters
+  const paragraphs = episode?.description
+    .split("\n")
+    .map((paragraph, index) => {
+      // Replace URLs with anchor tags
+      const paragraphWithLinks = paragraph.replace(urlRegex, (url) => {
+        return `<a>${url}</a>`;
+      });
+
+      // Return the paragraph with links as JSX
+      return (
+        <p
+          key={index}
+          dangerouslySetInnerHTML={{ __html: paragraphWithLinks }}
+        />
+      );
+    });
+
   return (
     <div className={epidoseDetailStyles.container}>
       {podcastDetail && (
@@ -34,12 +56,9 @@ export default function EpisodeDetail() {
             <Card>
               <h2>{episode?.title && episode.title}</h2>
               {episode?.description && (
-                <div
-                  className={epidoseDetailStyles.episode__description}
-                  dangerouslySetInnerHTML={{
-                    __html: episode.description,
-                  }}
-                />
+                <div className={epidoseDetailStyles.episode__description}>
+                  {paragraphs}
+                </div>
               )}
               <audio controls src={episode?.audioUrl}></audio>
             </Card>
