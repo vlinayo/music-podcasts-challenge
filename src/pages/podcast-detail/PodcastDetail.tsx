@@ -75,7 +75,11 @@ export default function PodcastDetail() {
                           {episode.title}
                         </td>
                         <td>{formatDate(episode.pubDate)}</td>
-                        <td>{formatDuration(episode.duration)}</td>
+                        <td>
+                          {episode.duration === "unknown"
+                            ? episode.duration
+                            : formatDuration(episode.duration)}
+                        </td>
                       </tr>
                     ))}
                 </tbody>

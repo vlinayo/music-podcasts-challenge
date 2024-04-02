@@ -6,7 +6,8 @@ export const formatDate = (pubDate: string): string => {
   return `${day}/${month}/${year}`;
 };
 
-export const formatDuration = (milliseconds: number): string => {
+export const formatDuration = (value: number | string): string => {
+  const milliseconds = parseInt(`${value}`);
   // Convert milliseconds to seconds
   const totalSeconds = Math.floor(milliseconds / 1000);
 

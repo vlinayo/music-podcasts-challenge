@@ -119,7 +119,9 @@ export const usePodcastDetailData = (podcastId?: string) => {
         listEpisodes.forEach((episode: PodcastEpisode) => {
           episodesData.push({
             title: episode.trackName,
-            duration: episode.trackTimeMillis,
+            duration: episode.trackTimeMillis
+              ? episode.trackTimeMillis
+              : "unknown",
             pubDate: episode.releaseDate,
             description: episode.description,
             audioUrl: episode.episodeUrl,

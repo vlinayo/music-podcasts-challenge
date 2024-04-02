@@ -5,7 +5,7 @@ import podcastCardStyles from "./PodcastCard.module.scss";
 export interface EpisodesDetails {
   title: string;
   description: string;
-  duration: number;
+  duration: number | string;
   pubDate: string;
   audioUrl: string;
   episodeId: string;
