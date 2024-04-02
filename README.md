@@ -23,6 +23,7 @@ cd music-podcasts-challenge
 ```bash
 npm install && npm run dev
 ```
+
 The development server will start, and you can access the application at http://localhost:5173/music-podcasts-challenge/ in your web browser.
 
 ## Production
@@ -32,7 +33,6 @@ The application is hosted in production mode at the following URL:
 https://vlinayo.github.io/music-podcasts-challenge/
 
 Feel free to explore and enjoy!
-
 
 # React + TypeScript + Vite
 
